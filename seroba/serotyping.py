@@ -476,21 +476,10 @@ class Serotyping:
             with open(self.prefix+'/pred.tsv', 'a') as fobj:
                 fobj.write(self.prefix+'\tuntypable\n')
         else:
-            cluster = self.serotype_cluster_dict[self.best_serotype]
-            self._run_ariba_on_cluster(cluster)
-            self._prediction(assemblie_file,cluster)
-            report_file = os.path.join(self.prefix,'report.tsv')
-            flag = ''
-            with open (report_file,'r') as report:
-                for line in report:
-                    if 'HET' in line:
-                        flag = 'contamination'
+            os.system('mkdir '+self.prefix)
             with open(self.prefix+'/pred.tsv', 'a') as fobj:
-                if '24' in self.sero:
-                    fobj.write(self.prefix+'\tserogroup 24\t'+flag+'\n')
-                else:
-                    fobj.write(self.prefix+'\t'+self.sero+'\t'+flag+'\n')
-            shutil.rmtree(os.path.join(self.prefix,'ref'))
+               fobj.write(self.prefix+'\t'+self.best_serotype+'\n')
+        
         if os.path.isdir(os.path.join(self.prefix,'genes')):
             shutil.rmtree(os.path.join(self.prefix,'genes'))
         if self.clean:
